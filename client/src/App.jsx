@@ -245,8 +245,7 @@ function App() {
         <header className="flex justify-between items-center py-4 mb-8">
           <div className="flex items-center gap-2">
             <div className="flex items-center justify-center">
-              <img src="../public/favicon.png" className="w-6 h-6" />
-              {/* <Share2 className="text-white w-5 h-5" /> */}
+              <img src="/favicon.png" className="w-6 h-6" alt="Glide Logo" />
             </div>
             <h1 className="text-2xl font-semibold tracking-tight">Glide</h1>
           </div>
