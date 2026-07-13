@@ -221,7 +221,7 @@ function App() {
   if (!myDevice) return <div className="flex items-center justify-center h-[100dvh]">Loading...</div>;
 
   return (
-    <div className="h-[100dvh] w-full bg-offWhite text-charcoal font-sans selection:bg-dustyPink selection:text-white flex flex-col relative overflow-hidden fixed inset-0">
+    <div className="h-full w-full bg-offWhite text-charcoal font-sans selection:bg-dustyPink selection:text-white flex flex-col overflow-hidden">
       
       {/* Toast Notification for Errors */}
       <AnimatePresence>
