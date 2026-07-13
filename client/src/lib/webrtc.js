@@ -39,8 +39,11 @@ export class WebRTCManager {
     });
 
     this.socket.on('incoming-pair', ({ from, deviceId, deviceName }) => {
-      // Automatically accept for this simple app, but could prompt user
-      this.socket.emit('accept-pair', { to: from, deviceId, deviceName });
+      // Automatically accept for this simple app
+      const myId = this.myDevice ? this.myDevice.id : 'unknown';
+      const myName = this.myDevice ? this.myDevice.name : 'Unknown Device';
+      
+      this.socket.emit('accept-pair', { to: from, deviceId: myId, deviceName: myName });
       this.onStatusChange('connected', { id: deviceId, name: deviceName, socketId: from });
       this.initiateWebRTC(from);
     });
@@ -99,6 +102,7 @@ export class WebRTCManager {
   }
 
   registerDevice(myDevice) {
+    this.myDevice = myDevice;
     this.socket.emit('register-device', {
       deviceId: myDevice.id,
       deviceName: myDevice.name
