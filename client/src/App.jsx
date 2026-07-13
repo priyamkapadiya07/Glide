@@ -218,10 +218,18 @@ function App() {
     setPairCode(null);
   };
 
-  if (!myDevice) return <div className="flex items-center justify-center h-[100dvh]">Loading...</div>;
+  if (!myDevice) return <div className="flex items-center justify-center h-screen">Loading...</div>;
+
+  useEffect(() => {
+    if (status === 'disconnected' || status === 'connecting' || status === 'error') {
+      document.body.style.overscrollBehaviorY = 'auto';
+    } else {
+      document.body.style.overscrollBehaviorY = 'none';
+    }
+  }, [status]);
 
   return (
-    <div className="h-full w-full bg-offWhite text-charcoal font-sans selection:bg-dustyPink selection:text-white flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-offWhite text-charcoal font-sans selection:bg-dustyPink selection:text-white flex flex-col relative overflow-hidden">
       
       {/* Toast Notification for Errors */}
       <AnimatePresence>
