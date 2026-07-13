@@ -218,8 +218,6 @@ function App() {
     setPairCode(null);
   };
 
-  if (!myDevice) return <div className="flex items-center justify-center h-screen">Loading...</div>;
-
   useEffect(() => {
     if (status === 'disconnected' || status === 'connecting' || status === 'error') {
       document.body.style.overscrollBehaviorY = 'auto';
@@ -227,6 +225,8 @@ function App() {
       document.body.style.overscrollBehaviorY = 'none';
     }
   }, [status]);
+
+  if (!myDevice) return <div className="flex items-center justify-center h-screen">Loading...</div>;
 
   return (
     <div className="min-h-screen bg-offWhite text-charcoal font-sans selection:bg-dustyPink selection:text-white flex flex-col relative overflow-hidden">
