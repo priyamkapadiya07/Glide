@@ -73,11 +73,14 @@ export default function Landing({ pairCode, status, onConnect, trustedDevices, o
             </h3>
             <div className="flex flex-col gap-3">
               {trustedDevices.map((device) => (
-                <button
+                <div
                   key={device.id}
-                  onClick={() => onReconnect && onReconnect(device.id)}
-                  disabled={status === 'connecting'}
-                  className="w-full bg-white p-4 rounded-2xl shadow-soft hover:shadow-float transition-all group border border-transparent hover:border-dustyPink/30 flex items-center justify-between disabled:opacity-50"
+                  onClick={() => status !== 'connecting' && onReconnect && onReconnect(device.id)}
+                  className={`w-full bg-white p-4 rounded-2xl shadow-soft transition-all group border border-transparent flex items-center justify-between ${
+                    status === 'connecting' ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-float hover:border-dustyPink/30 cursor-pointer'
+                  }`}
+                  role="button"
+                  tabIndex={0}
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-softBlush rounded-full flex items-center justify-center text-dustyPink group-hover:bg-dustyPink group-hover:text-white transition-colors">
@@ -105,7 +108,7 @@ export default function Landing({ pairCode, status, onConnect, trustedDevices, o
                     </button>
                     <ChevronRight className="w-5 h-5 text-lightGray group-hover:text-charcoal transition-colors hidden sm:block" />
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           </motion.div>
