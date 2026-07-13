@@ -71,6 +71,7 @@ function App() {
     } else if (newStatus === 'error') {
       setErrorMessage(info);
       setTimeout(() => setErrorMessage(''), 3000);
+      setStatus('disconnected');
     }
   }, []);
 
@@ -248,7 +249,7 @@ function App() {
         </header>
 
         <AnimatePresence mode="wait">
-          {status === 'disconnected' || status === 'connecting' ? (
+          {status === 'disconnected' || status === 'connecting' || status === 'error' ? (
             <motion.div
               key="landing"
               initial={{ opacity: 0, y: 10 }}

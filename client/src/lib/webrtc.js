@@ -30,6 +30,10 @@ export class WebRTCManager {
   }
 
   setupSocket() {
+    this.socket.on('connect_error', (err) => {
+      this.onStatusChange('error', 'Unable to connect to the backend server.');
+    });
+
     this.socket.on('pair-code', (code) => {
       this.onPairCode(code);
     });
