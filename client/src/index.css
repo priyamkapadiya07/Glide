@@ -6,6 +6,7 @@
   body {
     @apply bg-offWhite text-charcoal font-sans antialiased;
     overflow-x: hidden;
+    overscroll-behavior-y: none;
   }
 }
 

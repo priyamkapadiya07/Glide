@@ -189,6 +189,11 @@ function App() {
     }
   };
 
+  const handleDeleteDevice = async (id) => {
+    const updated = await removeTrustedDevice(id);
+    setTrustedDevices(updated);
+  };
+
   const sendTextMessage = (text) => {
     if (webrtc && text.trim()) {
       webrtc.sendText(text);
@@ -275,6 +280,7 @@ function App() {
                 onConnect={connectToDevice}
                 trustedDevices={trustedDevices}
                 onReconnect={handleReconnect}
+                onDeleteDevice={handleDeleteDevice}
               />
             </motion.div>
           ) : (

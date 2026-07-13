@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Smartphone, Monitor, ChevronRight } from 'lucide-react';
+import { Smartphone, Monitor, ChevronRight, Trash2 } from 'lucide-react';
 
-export default function Landing({ pairCode, status, onConnect, trustedDevices, onReconnect }) {
+export default function Landing({ pairCode, status, onConnect, trustedDevices, onReconnect, onDeleteDevice }) {
   const [inputCode, setInputCode] = useState('');
 
   const handleConnect = (e) => {
@@ -92,7 +92,19 @@ export default function Landing({ pairCode, status, onConnect, trustedDevices, o
                       <div className="text-xs text-warmGray">Click to reconnect</div>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-lightGray group-hover:text-charcoal transition-colors" />
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteDevice && onDeleteDevice(device.id);
+                      }}
+                      className="p-2 text-warmGray hover:text-red-500 hover:bg-red-50 rounded-full transition-colors z-10"
+                      title="Remove trusted device"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                    <ChevronRight className="w-5 h-5 text-lightGray group-hover:text-charcoal transition-colors hidden sm:block" />
+                  </div>
                 </button>
               ))}
             </div>

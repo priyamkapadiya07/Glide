@@ -79,28 +79,28 @@ export default function ActiveConnection({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-white rounded-2xl p-4 shadow-soft flex items-center justify-between border border-dustyPink/20"
+            className="bg-white rounded-2xl p-4 shadow-soft flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-dustyPink/20 overflow-hidden"
           >
-            <div className="flex items-center gap-3">
-              <div className="bg-softBlush p-2 rounded-full text-dustyPink">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="bg-softBlush p-2 rounded-full text-dustyPink shrink-0">
                 <HardDrive className="w-5 h-5" />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col w-full">
                 <p className="font-medium text-charcoal mb-1">Save this device?</p>
                 <input 
                   type="text"
                   value={saveDeviceName}
                   onChange={(e) => setSaveDeviceName(e.target.value)}
                   placeholder="Custom name (e.g. My Phone)"
-                  className="text-sm bg-offWhite border border-lightGray rounded-lg px-3 py-1 focus:outline-none focus:border-warmGray min-w-[200px]"
+                  className="text-sm bg-offWhite border border-lightGray rounded-lg px-3 py-1 focus:outline-none focus:border-warmGray w-full sm:min-w-[200px]"
                 />
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto justify-end">
               <button onClick={onDismissSave} className="px-4 py-2 text-sm text-warmGray hover:bg-lightGray rounded-xl transition-colors">
                 Not now
               </button>
-              <button onClick={() => onSaveDevice(saveDeviceName)} className="px-4 py-2 text-sm bg-charcoal text-white rounded-xl hover:bg-black transition-colors">
+              <button onClick={() => onSaveDevice(saveDeviceName)} className="px-4 py-2 text-sm bg-charcoal text-white rounded-xl hover:bg-black transition-colors whitespace-nowrap">
                 Save Device
               </button>
             </div>
