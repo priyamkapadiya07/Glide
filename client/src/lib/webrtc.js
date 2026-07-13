@@ -4,7 +4,8 @@ const CHUNK_SIZE = 64 * 1024; // 64 KB chunks
 
 export class WebRTCManager {
   constructor(onStatusChange, onFileProgress, onFileComplete, onTextMessage, onPairCode, onFileStart) {
-    this.socket = io(window.location.origin === 'http://localhost:5173' ? 'http://localhost:3001' : '/');
+    const serverUrl = import.meta.env.VITE_SERVER_URL || (window.location.origin === 'http://localhost:5173' ? 'http://localhost:3001' : '/');
+    this.socket = io(serverUrl);
     this.peerConnection = null;
     this.dataChannel = null;
     

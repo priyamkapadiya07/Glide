@@ -22,6 +22,7 @@ function App() {
   const [receivedFiles, setReceivedFiles] = useState([]);
   const [textMessages, setTextMessages] = useState([]);
   const [showSavePrompt, setShowSavePrompt] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
     async function init() {
@@ -32,6 +33,25 @@ function App() {
     }
     init();
   }, []);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    }
+  };
 
   const handleStatusChange = useCallback((newStatus, info) => {
     setStatus(newStatus);
@@ -207,14 +227,24 @@ function App() {
             </div>
             <h1 className="text-2xl font-semibold tracking-tight">Glide</h1>
           </div>
-          {status !== 'disconnected' && status !== 'connecting' && (
-            <button 
-              onClick={disconnect}
-              className="text-sm font-medium text-warmGray hover:text-charcoal transition-colors px-4 py-2 rounded-full hover:bg-lightGray"
-            >
-              Disconnect
-            </button>
-          )}
+          <div className="flex items-center gap-4">
+            {deferredPrompt && (
+              <button
+                onClick={handleInstallClick}
+                className="text-sm font-medium bg-dustyPink text-white px-4 py-2 rounded-xl hover:bg-opacity-90 transition-colors shadow-soft"
+              >
+                Install App
+              </button>
+            )}
+            {status !== 'disconnected' && status !== 'connecting' && (
+              <button 
+                onClick={disconnect}
+                className="text-sm font-medium text-warmGray hover:text-charcoal transition-colors px-4 py-2 rounded-full hover:bg-lightGray"
+              >
+                Disconnect
+              </button>
+            )}
+          </div>
         </header>
 
         <AnimatePresence mode="wait">
