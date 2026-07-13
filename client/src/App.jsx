@@ -143,9 +143,21 @@ function App() {
     };
   }, []); // Run once on mount
 
+  useEffect(() => {
+    if (webrtc && myDevice) {
+      webrtc.registerDevice(myDevice);
+    }
+  }, [webrtc, myDevice]);
+
   const connectToDevice = (code) => {
     if (webrtc && myDevice) {
       webrtc.requestPair(code, myDevice);
+    }
+  };
+
+  const handleReconnect = (targetId) => {
+    if (webrtc && myDevice) {
+      webrtc.requestReconnect(targetId, myDevice);
     }
   };
 
@@ -166,11 +178,11 @@ function App() {
     });
   };
 
-  const handleSaveDevice = async () => {
+  const handleSaveDevice = async (customName) => {
     if (connectedDevice) {
       const updated = await addTrustedDevice({
         id: connectedDevice.id,
-        name: connectedDevice.name,
+        name: customName || connectedDevice.name,
       });
       setTrustedDevices(updated);
       setShowSavePrompt(false);
@@ -262,6 +274,7 @@ function App() {
                 status={status} 
                 onConnect={connectToDevice}
                 trustedDevices={trustedDevices}
+                onReconnect={handleReconnect}
               />
             </motion.div>
           ) : (

@@ -8,6 +8,8 @@ app.use(cors());
 
 const server = http.createServer(app);
 const io = new Server(server, {
+  pingTimeout: 60000,
+  pingInterval: 25000,
   cors: {
     origin: '*',
     methods: ['GET', 'POST']
@@ -64,6 +66,28 @@ io.on('connection', (socket) => {
       deviceId,
       deviceName
     });
+  });
+
+  socket.on('request-reconnect', ({ targetDeviceId, deviceId, deviceName }) => {
+    console.log(`Socket ${socket.id} requesting reconnect to ${targetDeviceId}`);
+    let targetSocketId = null;
+    for (const [id, data] of users.entries()) {
+      if (data.deviceId === targetDeviceId) {
+        targetSocketId = id;
+        break;
+      }
+    }
+    
+    if (targetSocketId && targetSocketId !== socket.id) {
+      io.to(targetSocketId).emit('incoming-pair', {
+        from: socket.id,
+        deviceId,
+        deviceName
+      });
+      socket.emit('pair-pending');
+    } else {
+      socket.emit('pair-error', 'Device is offline or unavailable.');
+    }
   });
 
   // WebRTC Signaling

@@ -89,6 +89,22 @@ export class WebRTCManager {
     this.onStatusChange('connecting');
   }
 
+  requestReconnect(targetDeviceId, myDevice) {
+    this.socket.emit('request-reconnect', {
+      targetDeviceId,
+      deviceId: myDevice.id,
+      deviceName: myDevice.name
+    });
+    this.onStatusChange('connecting');
+  }
+
+  registerDevice(myDevice) {
+    this.socket.emit('register-device', {
+      deviceId: myDevice.id,
+      deviceName: myDevice.name
+    });
+  }
+
   createPeerConnection(targetSocketId) {
     this.peerConnection = new RTCPeerConnection({
       iceServers: [

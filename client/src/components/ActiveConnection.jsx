@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UploadCloud, File, Folder, Download, CheckCircle, X, Send, HardDrive } from 'lucide-react';
 
@@ -16,8 +16,15 @@ export default function ActiveConnection({
 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [textInput, setTextInput] = useState('');
+  const [saveDeviceName, setSaveDeviceName] = useState(device?.name || '');
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (showSavePrompt && device) {
+      setSaveDeviceName(device.name);
+    }
+  }, [showSavePrompt, device]);
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
@@ -78,16 +85,22 @@ export default function ActiveConnection({
               <div className="bg-softBlush p-2 rounded-full text-dustyPink">
                 <HardDrive className="w-5 h-5" />
               </div>
-              <div>
-                <p className="font-medium text-charcoal">Save {device?.name}?</p>
-                <p className="text-xs text-warmGray">Remember this device for 1-click reconnects later.</p>
+              <div className="flex flex-col">
+                <p className="font-medium text-charcoal mb-1">Save this device?</p>
+                <input 
+                  type="text"
+                  value={saveDeviceName}
+                  onChange={(e) => setSaveDeviceName(e.target.value)}
+                  placeholder="Custom name (e.g. My Phone)"
+                  className="text-sm bg-offWhite border border-lightGray rounded-lg px-3 py-1 focus:outline-none focus:border-warmGray min-w-[200px]"
+                />
               </div>
             </div>
             <div className="flex gap-2">
               <button onClick={onDismissSave} className="px-4 py-2 text-sm text-warmGray hover:bg-lightGray rounded-xl transition-colors">
                 Not now
               </button>
-              <button onClick={onSaveDevice} className="px-4 py-2 text-sm bg-charcoal text-white rounded-xl hover:bg-black transition-colors">
+              <button onClick={() => onSaveDevice(saveDeviceName)} className="px-4 py-2 text-sm bg-charcoal text-white rounded-xl hover:bg-black transition-colors">
                 Save Device
               </button>
             </div>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Smartphone, Monitor, ChevronRight } from 'lucide-react';
 
-export default function Landing({ pairCode, status, onConnect, trustedDevices }) {
+export default function Landing({ pairCode, status, onConnect, trustedDevices, onReconnect }) {
   const [inputCode, setInputCode] = useState('');
 
   const handleConnect = (e) => {
@@ -75,8 +75,9 @@ export default function Landing({ pairCode, status, onConnect, trustedDevices })
               {trustedDevices.map((device) => (
                 <button
                   key={device.id}
-                  onClick={() => {/* Real implementation would need a mechanism to ping this device without code if online */}}
-                  className="w-full bg-white p-4 rounded-2xl shadow-soft hover:shadow-float transition-all group border border-transparent hover:border-dustyPink/30 flex items-center justify-between"
+                  onClick={() => onReconnect && onReconnect(device.id)}
+                  disabled={status === 'connecting'}
+                  className="w-full bg-white p-4 rounded-2xl shadow-soft hover:shadow-float transition-all group border border-transparent hover:border-dustyPink/30 flex items-center justify-between disabled:opacity-50"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 bg-softBlush rounded-full flex items-center justify-center text-dustyPink group-hover:bg-dustyPink group-hover:text-white transition-colors">
@@ -88,7 +89,7 @@ export default function Landing({ pairCode, status, onConnect, trustedDevices })
                     </div>
                     <div className="text-left">
                       <div className="font-medium text-charcoal">{device.name}</div>
-                      <div className="text-xs text-warmGray">Click to reconnect (Coming soon)</div>
+                      <div className="text-xs text-warmGray">Click to reconnect</div>
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-lightGray group-hover:text-charcoal transition-colors" />
