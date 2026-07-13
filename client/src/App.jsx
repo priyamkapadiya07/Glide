@@ -218,18 +218,14 @@ function App() {
     setPairCode(null);
   };
 
-  useEffect(() => {
-    if (status === 'disconnected' || status === 'connecting' || status === 'error') {
-      document.body.style.overscrollBehaviorY = 'auto';
-    } else {
-      document.body.style.overscrollBehaviorY = 'none';
-    }
-  }, [status]);
-
   if (!myDevice) return <div className="flex items-center justify-center h-screen">Loading...</div>;
 
+  const overscrollClass = (status === 'disconnected' || status === 'connecting' || status === 'error') 
+    ? 'overscroll-y-auto' 
+    : 'overscroll-y-none';
+
   return (
-    <div className="min-h-screen bg-offWhite text-charcoal font-sans selection:bg-dustyPink selection:text-white flex flex-col relative overflow-hidden">
+    <div className={`h-[100dvh] w-full bg-offWhite text-charcoal font-sans selection:bg-dustyPink selection:text-white flex flex-col overflow-y-auto overflow-x-hidden ${overscrollClass}`}>
       
       {/* Toast Notification for Errors */}
       <AnimatePresence>
